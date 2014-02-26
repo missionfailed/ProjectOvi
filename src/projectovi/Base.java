@@ -111,5 +111,9 @@ public class Base {
         public void actualiza(long tiempo) {
             anim.actualiza(tiempo);
         }
+        
+        public boolean mouse_contiene(int x, int y) {
+            return getPerimetro().contains(x, y);
+    }
     
 }

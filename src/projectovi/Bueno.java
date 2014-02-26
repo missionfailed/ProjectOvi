@@ -47,8 +47,4 @@ public class Bueno extends Base {
     public String getDesaparece() {
         return DESAPARECE;
     }
-    
-    public boolean mouse_contiene(int x, int y) {
-            return getPerimetro().contains(x, y);
-    }
 }

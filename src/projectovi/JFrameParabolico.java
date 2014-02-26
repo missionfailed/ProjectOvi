@@ -37,13 +37,14 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         //declaracion de variables
         private boolean pausa;  // Checa si el juego esta pausado
         private boolean colisiono;  // Checa si colisiono el bueno con algun malo
+        private boolean clickPelota;    // Checa si se le dio click a la pelota
         private int colContador; // Tiempo de despliego de colision
         private int direccion;  // Direccion del Bueno
-        private int antDireccion;   // Direccion anterior del objeto bueno
         private int velocidad;  // Velocidad del Bueno
         private int caida;      // Velocidad del Malo
         private int score;      // Score del juego
-        private int mCantidad;  // Cantidad de malos
+        private int perdida;    // Cantidad de bolas perdidas
+        private int vidas;      // Cantidad de vidas
         private Image dbImage;	// Imagen a proyectar
         private Graphics dbg;	// Objeto grafico
         private SoundClip bomb;    //Objeto AudioClip 
@@ -66,10 +67,12 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             setSize(600, 600);
             pausa = false;
             colisiono = false;
+            clickPelota = false;
             score = 0;
             direccion = 0;
             velocidad = 12;
             caida = 1;
+            perdida = 0;
             int posX = getWidth()/2;
             int posY = getHeight();
             bueno = new Bueno(posX,posY);
@@ -78,11 +81,11 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             //Se cargan los sonidos.
             bomb = new SoundClip ("/sounds/pokeball.wav");
             app = new SoundClip ("/sounds/Explosion.wav");
-            posX = getWidth()/2;
-            posY = getHeight()/2;
-            malo = new Malo(posX, posY, 3);
             base = new Superficie(0, 0);
             base.setPosY(getHeight()-base.getAlto());
+            malo = new Malo(0, 0, 0);
+            malo.setPosX(base.getAncho()/2);
+            malo.setPosY(getHeight()-(base.getAlto()+malo.getAlto()));
             setBackground(Color.green);
             addKeyListener(this);
             addMouseListener(this);
@@ -182,8 +185,10 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                         break;
                 }
                 
-                malo.setPosY(malo.getPosY()+malo.getVelocidad());
-                malo.actualiza(tiempoActual);
+                if (clickPelota) {
+                    malo.setPosY(malo.getPosY()+malo.getVelocidad());
+                    malo.actualiza(tiempoActual);
+                }
             }
         }
         
@@ -206,6 +211,18 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             }
             if (bueno.getPosY() < 0) {
                 bueno.setPosY(0);
+            }
+            
+            //checa colision del malo con la parte de abajo del applet
+            if (malo.getPosY() + malo.getAlto() > getHeight()) {
+                app.play();
+                clickPelota = false;
+                perdida++;
+                if (perdida!=0 && perdida%3==0) {
+                    vidas--;
+                }
+                malo.setPosX(base.getAncho()/2);
+                malo.setPosY(getHeight()-(base.getAlto()+malo.getAlto()));
             }
             
             //colision entre objetos
@@ -297,7 +314,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                 paint1(dbg);
                 //Dibuja la imagen actualizada
                 g.drawImage(dbImage, 0, 0, this);
-		  }
+        }
         
         public void paint1 (Graphics g){
             //Se pinta siempre y cuando tengas vidas
@@ -332,7 +349,11 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
 	 * e es el evento generado al hacer click con el mouse.
 	 */
         public void mouseClicked(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
             
+            if (malo.mouse_contiene(x, y))
+                clickPelota = true;
         }
 
         /**
