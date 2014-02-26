@@ -317,6 +317,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
 	 * e es el evento generado al presionar un botÃ³n del mouse sobre algun componente.
 	 */
         public void mousePressed(MouseEvent e) {
+            //Se lanza la pelota
 
         }
 
