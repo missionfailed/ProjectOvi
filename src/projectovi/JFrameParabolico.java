@@ -19,8 +19,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 public class JFrameParabolico extends JFrame implements Runnable, KeyListener, MouseListener{
@@ -42,6 +51,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private Bueno bueno;    // Objeto de la clase Bueno
         private Malo malo;   // Objeto dee la clase Malo
         private Base base;   // Objeto de base de la pelota
+        private String []arr;   // Objeto de lo leeido del archivo
         //Variables control de tiempo de animacion
         private long tiempoActual;
 	private long tiempoInicial;
@@ -231,10 +241,25 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 direccion = 1;
             }
-            
-            //Presiono la letra p
+            //Presiono la letra P
             if (e.getKeyCode() == KeyEvent.VK_P) {
                 pausa = !pausa;
+            }
+            //Presiono la letra G
+            if (e.getKeyCode() == KeyEvent.VK_G) {
+                try {
+                    grabaArchivo();
+                } catch (IOException ex) {
+                    System.out.println("Error en " + ex.toString());
+                }
+            }
+            //Presiono la letra C
+            if (e.getKeyCode() == KeyEvent.VK_C) {
+                try {
+                    leeArchivo();
+                } catch (IOException ex) {
+                    System.out.println("Error en " + ex.toString());
+                }
             }
         }
         
@@ -349,5 +374,35 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
 	 */
         public void mouseExited(MouseEvent e) {
 
+        }
+        
+        public void leeArchivo() throws IOException {
+                                                          
+                BufferedReader fileIn;
+                try {
+                        fileIn = new BufferedReader(new FileReader("/savedata/datos.txt"));
+                } catch (FileNotFoundException e){
+                        File puntos = new File("/savedata/datos.txt");
+                        PrintWriter fileOut = new PrintWriter(puntos);
+                        fileOut.println("100,demo");
+                        fileOut.close();
+                        fileIn = new BufferedReader(new FileReader("/savedata/datos.txt"));
+                }
+                String dato = fileIn.readLine();
+                while(dato != null) {  
+                                                        
+                      arr = dato.split(",");
+                      int num = (Integer.parseInt(arr[0]));
+                      String nom = arr[1];
+                      dato = fileIn.readLine();
+                }
+                fileIn.close();
+        }
+        
+        public void grabaArchivo() throws IOException {
+                                                          
+                PrintWriter fileOut = new PrintWriter(new FileWriter("/savedata/datos.txt"));
+                fileOut.println(""+score);
+                fileOut.close();
         }
 }

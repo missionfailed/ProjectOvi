@@ -33,13 +33,11 @@ public class Bueno extends Base {
     public Bueno(int posX,int posY){
         super(posX,posY);
        
-        Image luigi1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/luigi1.gif"));
-        Image luigi2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/luigi2.gif"));
-        Image luigi3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/luigi3.gif"));
+        Image pirana1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/enemy1.png"));
+        Image pirana2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/enemy2.png"));
         anim = new Animacion();
-        anim.sumaCuadro(luigi1, 100);
-        anim.sumaCuadro(luigi2, 100);
-        anim.sumaCuadro(luigi3, 100);
+        anim.sumaCuadro(pirana1, 100);
+        anim.sumaCuadro(pirana2, 100);
     }
     
     public String getPausado() {
