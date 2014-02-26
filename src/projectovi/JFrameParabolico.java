@@ -41,6 +41,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private SoundClip app;     //Objeto AudioClip
         private Bueno bueno;    // Objeto de la clase Bueno
         private Malo malo;   // Objeto dee la clase Malo
+        private Base base;   // Objeto de base de la pelota
         //Variables control de tiempo de animacion
         private long tiempoActual;
 	private long tiempoInicial;
@@ -57,7 +58,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             colisiono = false;
             score = 0;
             direccion = 0;
-            velocidad = 10;
+            velocidad = 12;
             caida = 1;
             int posX = getWidth()/2;
             int posY = getHeight();
@@ -70,6 +71,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             posX = getWidth()/2;
             posY = getHeight()/2;
             malo = new Malo(posX, posY, 3);
+            base = new Superficie(0, 0);
+            base.setPosY(getHeight()-base.getAlto());
             setBackground(Color.green);
             addKeyListener(this);
             addMouseListener(this);
@@ -185,8 +188,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             if (bueno.getPosX()+bueno.getAncho() > getWidth()) {
                 bueno.setPosX(getWidth()-bueno.getAncho());
             }
-            if (bueno.getPosX() < 0) {
-                bueno.setPosX(0);
+            if (bueno.getPosX() < base.getAncho()) {
+                bueno.setPosX(base.getAncho());
             }
             if (bueno.getPosY()+bueno.getAlto() > getHeight()) {
                 bueno.setPosY(getHeight()-bueno.getAlto());
@@ -273,9 +276,10 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         
         public void paint1 (Graphics g){
             //Se pinta siempre y cuando tengas vidas
-                    if(bueno!=null && malo!=null){
+                    if(bueno!=null && malo!=null && base!=null){
                         g.drawImage(bueno.getImagenI(), bueno.getPosX(), bueno.getPosY(), this);
                         g.drawImage(malo.getImagenI(), malo.getPosX(), malo.getPosY(), this);
+                        g.drawImage(base.getImagenI(), base.getPosX(), base.getPosY(), this);
                         //Si el juego esta en pausa se despliega que esta pauso
                         if (pausa)
                             g.drawString(bueno.getPausado(), bueno.getPosX(), bueno.getPosY()+bueno.getAlto()/2);

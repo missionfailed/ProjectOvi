@@ -80,7 +80,7 @@ public class Base {
 	public int getAlto() {
 		return (new ImageIcon(anim.getImagen())).getIconHeight();
 	}
-	
+        
 	/**
 	 * Metodo de acceso que regresa la imagen del icono 
 	 * @return un objeto de la clase <code>Image</code> que es la imagen del icono.
