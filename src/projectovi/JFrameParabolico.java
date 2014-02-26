@@ -145,22 +145,25 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             
             //Guarda el tiempo actual
             tiempoActual += tiempoTranscurrido;
-            bueno.actualiza(tiempoActual);
             
             if (!pausa) {
                 //dependiendo de la tecla que se este oprimiendo es hacia donde se mueve el personaje Bueno
                 switch (direccion) {
                     case 1:
                         bueno.setPosX(bueno.getPosX() + velocidad);
+                        bueno.actualiza(tiempoActual);
                         break; 
                     case 2:
                         bueno.setPosX(bueno.getPosX() - velocidad);
+                        bueno.actualiza(tiempoActual);
                         break;
                     case 3:
                         bueno.setPosY(bueno.getPosY() - velocidad);
+                        bueno.actualiza(tiempoActual);
                         break;
                     case 4:
                         bueno.setPosY(bueno.getPosY() + velocidad);
+                        bueno.actualiza(tiempoActual);
                     case 0:
                         bueno.setPosX(bueno.getPosX());
                         break;
