@@ -17,7 +17,8 @@ public class ProjectOvi {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.print("Stuff");
+        JFrameParabolico parabolico = new JFrameParabolico();
+        parabolico.setVisible(true);
     }
     
 }
