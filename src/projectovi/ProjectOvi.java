@@ -1,5 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
+/* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -8,7 +7,7 @@ package projectovi;
 
 /**
  *
- * @author Grace and Ovi #probando
+ * @author Tate
  */
 public class ProjectOvi {
 
@@ -17,6 +16,8 @@ public class ProjectOvi {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        JFrameParabolico parabolico = new JFrameParabolico();
+        parabolico.setVisible(true);
     }
     
 }
