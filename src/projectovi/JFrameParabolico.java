@@ -42,6 +42,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private boolean pausa;  // Checa si el juego esta pausado
         private boolean colisiono;  // Checa si colisiono el bueno con algun malo
         private boolean clickPelota;    // Checa si se le dio click a la pelota
+        private boolean llegaMaxAltura; // Checa si llego a la altura maxima de la parabola
         private int colContador; // Tiempo de despliego de colision
         private int direccion;  // Direccion del Bueno
         private int velocidad;  // Velocidad del Bueno
@@ -75,10 +76,11 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         }
         
         public void init() {
-            setSize(600, 600);
+            setSize(800, 600);
             pausa = false;
             colisiono = false;
             clickPelota = false;
+            llegaMaxAltura = false;
             score = 0;
             direccion = 0;
             velocidad = 12;
@@ -199,17 +201,11 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                 
                 // movimiento parabolico de la nube
                 if (clickPelota) {
-                    velocidadInicial = 40.0;
-                    angulo = 1.0;
-                    alturaMax = baseY*1.0 - (pow(velocidadInicial, 2.0)*pow(sin(angulo), 2.0))/(2.0*GRAVEDAD);
-                    alcanceMax = (pow(velocidadInicial, 2.0)*sin(2.0*angulo))/(GRAVEDAD);
-                    velocidadX = velocidadInicial*cos(angulo);
-                    velocidadY = velocidadInicial*sin(angulo)+GRAVEDAD;
-                    
                     malo.setPosX(malo.getPosX()+(int)velocidadX);
-                    if (malo.getPosY() > alturaMax) {
+                    if (malo.getPosY() > alturaMax && !llegaMaxAltura) {
                         malo.setPosY(malo.getPosY()-(int)velocidadY);
                     } else {
+                        llegaMaxAltura = true;
                         malo.setPosY(malo.getPosY()+(int)velocidadY);
                     }
                     
@@ -243,6 +239,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             if (malo.getPosY() + malo.getAlto() > getHeight()) {
                 app.play();
                 clickPelota = false;
+                llegaMaxAltura = false;
                 perdida++;
                 if (perdida!=0 && perdida%3==0) {
                     vidas--;
@@ -254,11 +251,13 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             //colision entre objetos
             if (bueno.intersecta(malo)) {
                 bomb.play();
+                clickPelota = false;
+                llegaMaxAltura = false;
                 colisiono = true;
                 colContador = 0;
                 score+=2;
-                malo.setPosX(getWidth()/2);
-                malo.setPosY(getHeight()/2);
+                malo.setPosX(base.getAncho()/2);
+                malo.setPosY(getHeight()-(base.getAlto()+malo.getAlto()));
             }
         }
         
@@ -379,6 +378,19 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             int y = e.getY();
             
             if (malo.mouse_contiene(x, y))
+                if (!clickPelota) {
+                    alturaMax = 0;
+                    alcanceMax = getWidth();
+                    
+                    while (alturaMax <= 0 || alcanceMax >= getWidth()) {
+                        velocidadInicial = Math.random()*99.0+1;
+                        angulo = Math.random()+0.01;
+                        alturaMax = baseY*1.0 - (pow(velocidadInicial, 2.0)*pow(sin(angulo), 2.0))/(2.0*GRAVEDAD);
+                        alcanceMax = (pow(velocidadInicial, 2.0)*sin(2.0*angulo))/(GRAVEDAD);
+                    }
+                    velocidadX = velocidadInicial*cos(angulo);
+                    velocidadY = velocidadInicial*sin(angulo)+GRAVEDAD;
+                }
                 clickPelota = true;
         }
 
