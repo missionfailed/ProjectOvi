@@ -26,6 +26,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -35,6 +38,7 @@ import javax.swing.JFrame;
 public class JFrameParabolico extends JFrame implements Runnable, KeyListener, MouseListener{
         private static final long serialVersionUID = 1L;
         //declaracion de variables
+        private static final double GRAVEDAD = 9.81;
         private boolean pausa;  // Checa si el juego esta pausado
         private boolean colisiono;  // Checa si colisiono el bueno con algun malo
         private boolean clickPelota;    // Checa si se le dio click a la pelota
@@ -45,6 +49,13 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private int score;      // Score del juego
         private int perdida;    // Cantidad de bolas perdidas
         private int vidas;      // Cantidad de vidas
+        private double velocidadInicial;    // velocidad inicial de la nube
+        private double velocidadX;  // velocidad en X de la nube
+        private double velocidadY;  // velocidad en Y de la nube
+        private double angulo;      // angulo inicial de lanzamiento de la nube
+        private double alturaMax;
+        private double alcanceMax;
+        private int baseY;
         private Image dbImage;	// Imagen a proyectar
         private Graphics dbg;	// Objeto grafico
         private SoundClip bomb;    //Objeto AudioClip 
@@ -83,9 +94,10 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             app = new SoundClip ("/sounds/Explosion.wav");
             base = new Superficie(0, 0);
             base.setPosY(getHeight()-base.getAlto());
-            malo = new Malo(0, 0, 0);
+            malo = new Malo(0, 0);
             malo.setPosX(base.getAncho()/2);
             malo.setPosY(getHeight()-(base.getAlto()+malo.getAlto()));
+            baseY = getHeight()-(base.getAlto()+malo.getAlto());
             setBackground(Color.green);
             addKeyListener(this);
             addMouseListener(this);
@@ -185,8 +197,22 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                         break;
                 }
                 
+                // movimiento parabolico de la nube
                 if (clickPelota) {
-                    malo.setPosY(malo.getPosY()+malo.getVelocidad());
+                    velocidadInicial = 40.0;
+                    angulo = 1.0;
+                    alturaMax = baseY*1.0 - (pow(velocidadInicial, 2.0)*pow(sin(angulo), 2.0))/(2.0*GRAVEDAD);
+                    alcanceMax = (pow(velocidadInicial, 2.0)*sin(2.0*angulo))/(GRAVEDAD);
+                    velocidadX = velocidadInicial*cos(angulo);
+                    velocidadY = velocidadInicial*sin(angulo)+GRAVEDAD;
+                    
+                    malo.setPosX(malo.getPosX()+(int)velocidadX);
+                    if (malo.getPosY() > alturaMax) {
+                        malo.setPosY(malo.getPosY()-(int)velocidadY);
+                    } else {
+                        malo.setPosY(malo.getPosY()+(int)velocidadY);
+                    }
+                    
                     malo.actualiza(tiempoActual);
                 }
             }

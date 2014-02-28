@@ -22,7 +22,8 @@ import java.awt.Toolkit;
 public class Malo extends Base{
     
     private static int conteo;
-    private int velocidad;
+    private double velocidadX;
+    private double velocidadY;
     
     /**
      * Metodo constructor que hereda los atributos de la clase <code>Base</code>.
@@ -31,9 +32,8 @@ public class Malo extends Base{
      * @param image es la <code>imagen</code> del objeto malo.
      * @param conteo es el <code>contador</code> del objeto malo.
      */
-    public Malo(int posX,int posY, int velocidad){
+    public Malo(int posX,int posY){
             super(posX,posY);
-            this.velocidad = velocidad;
             conteo = 0;
             
             Image lakitu1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/lakitu1.gif"));
@@ -60,18 +60,34 @@ public class Malo extends Base{
     }
     
     /**
-     * Metodo modificador usado para cambiar la velocidad del objeto 
-     * @param conteo es la <code>velocidad</code> del objeto.
+     * Metodo modificador usado para cambiar la velocidad en x del objeto 
+     * @param conteo es la <code>velocidadX</code> del objeto.
      */
-    public void setVelocidad(int velocidad) {
-            this.velocidad = velocidad;
+    public void setVelocidadX(double velocidadX) {
+            this.velocidadX = velocidadX;
     }
 
     /**
-     * Metodo de acceso que regresa la velocidad del objeto 
-     * @return conteo es la <code>velocidad</code> del objeto.
+     * Metodo de acceso que regresa la velocidad en X del objeto 
+     * @return conteo es la <code>velocidadX</code> del objeto.
      */
-    public int getVelocidad() {
-            return velocidad;
+    public double getVelocidadX() {
+            return velocidadX;
+    }
+    
+    /**
+     * Metodo modificador usado para cambiar la velocidad en x del objeto 
+     * @param conteo es la <code>velocidadX</code> del objeto.
+     */
+    public void setVelocidadY(double velocidadY) {
+            this.velocidadY = velocidadY;
+    }
+
+    /**
+     * Metodo de acceso que regresa la velocidad en X del objeto 
+     * @return conteo es la <code>velocidadX</code> del objeto.
+     */
+    public double getVelocidadY() {
+            return velocidadY;
     }
 }
