@@ -46,7 +46,6 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private int colContador; // Tiempo de despliego de colision
         private int direccion;  // Direccion del Bueno
         private int velocidad;  // Velocidad del Bueno
-        private int caida;      // Velocidad del Malo
         private int score;      // Score del juego
         private int perdida;    // Cantidad de bolas perdidas
         private int vidas;      // Cantidad de vidas
@@ -83,8 +82,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             llegaMaxAltura = false;
             score = 0;
             direccion = 0;
-            velocidad = 12;
-            caida = 1;
+            velocidad = 15;
+            vidas = 5;
             perdida = 0;
             int posX = getWidth()/2;
             int posY = getHeight();
@@ -377,7 +376,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             int x = e.getX();
             int y = e.getY();
             
-            if (malo.mouse_contiene(x, y))
+            if (malo.mouse_contiene(x, y)) {
                 if (!clickPelota) {
                     alturaMax = 0;
                     alcanceMax = getWidth();
@@ -392,6 +391,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                     velocidadY = velocidadInicial*sin(angulo)+GRAVEDAD;
                 }
                 clickPelota = true;
+            }
         }
 
         /**
@@ -439,20 +439,29 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                                                           
                 BufferedReader fileIn;
                 try {
-                        fileIn = new BufferedReader(new FileReader("/savedata/datos.txt"));
+                        fileIn = new BufferedReader(new FileReader("gamedata.txt"));
                 } catch (FileNotFoundException e){
-                        File puntos = new File("/savedata/datos.txt");
-                        PrintWriter fileOut = new PrintWriter(puntos);
-                        fileOut.println("100,demo");
+                        File data = new File("/savedata/datos.txt");
+                        PrintWriter fileOut = new PrintWriter(data);
+                        fileOut.println(""+bueno.getPosX()+";"+""+bueno.getPosY()+";"+""+malo.getPosX()+";"+""+malo.getPosY()+";"+""+velocidadX+";"+""+velocidadY+";"+""+clickPelota+";"+""+llegaMaxAltura+";"+""+vidas+";"+""+perdida+";"+""+alturaMax);
                         fileOut.close();
-                        fileIn = new BufferedReader(new FileReader("/savedata/datos.txt"));
+                        fileIn = new BufferedReader(new FileReader("gamedata.txt"));
                 }
                 String dato = fileIn.readLine();
                 while(dato != null) {  
                                                         
-                      arr = dato.split(",");
-                      int num = (Integer.parseInt(arr[0]));
-                      String nom = arr[1];
+                      arr = dato.split(";");
+                      bueno.setPosX(Integer.parseInt(arr[0]));
+                      bueno.setPosY(Integer.parseInt(arr[1]));
+                      malo.setPosX(Integer.parseInt(arr[2]));
+                      malo.setPosY(Integer.parseInt(arr[3]));
+                      velocidadX = Double.parseDouble(arr[4]);
+                      velocidadY = Double.parseDouble(arr[5]);
+                      clickPelota = Boolean.parseBoolean(arr[6]);
+                      llegaMaxAltura = Boolean.parseBoolean(arr[7]);
+                      vidas = Integer.parseInt(arr[8]);
+                      perdida = Integer.parseInt(arr[9]);
+                      alturaMax = Double.parseDouble(arr[10]);
                       dato = fileIn.readLine();
                 }
                 fileIn.close();
@@ -460,8 +469,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         
         public void grabaArchivo() throws IOException {
                                                           
-                PrintWriter fileOut = new PrintWriter(new FileWriter("/savedata/datos.txt"));
-                fileOut.println(""+score);
+                PrintWriter fileOut = new PrintWriter(new FileWriter("gamedata.txt"));
+                fileOut.println(""+bueno.getPosX()+";"+""+bueno.getPosY()+";"+""+malo.getPosX()+";"+""+malo.getPosY()+";"+""+velocidadX+";"+""+velocidadY+";"+""+clickPelota+";"+""+llegaMaxAltura+";"+""+vidas+";"+""+perdida+";"+""+alturaMax);
                 fileOut.close();
         }
 }
