@@ -8,7 +8,7 @@ package projectovi;
 
 /**
  *
- * @author Ovidio
+ * @author Ovidio Villarreal, Graciela Garcia
  */
 
 import java.awt.Graphics;

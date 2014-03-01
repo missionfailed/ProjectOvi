@@ -7,7 +7,7 @@ package projectovi;
 
 /**
  *
- * @author Tate
+ * @author Ovidio Villarreal, Graciela Garcia
  */
 public class ProjectOvi {
 
