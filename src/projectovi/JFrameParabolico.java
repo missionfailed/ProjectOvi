@@ -97,7 +97,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             //Se cargan los sonidos.
             bomb = new SoundClip ("/sounds/pokeball.wav");
             app = new SoundClip ("/sounds/Explosion.wav");
-            ins = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/PantallaInicioTRY1.png"));
+            ins = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/PantallaInstruccionesTRY1.png"));
             base = new Superficie(0, 0);
             base.setPosY(getHeight()-base.getAlto());
             malo = new Malo(0, 0);
