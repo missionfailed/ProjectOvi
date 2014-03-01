@@ -59,7 +59,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private double alcanceMax;  // alcance maximo del tiro parabolico
         private int baseY;          // posicion inicial y
         private Image dbImage;	// Imagen a proyectar
-        private Image ins;
+        private Image ins;      // Imagen de instrucciones
+        private Image creditos; // Imagen de creditos
         private Graphics dbg;	// Objeto grafico
         private SoundClip bomb;    //Objeto AudioClip 
         private SoundClip app;     //Objeto AudioClip
@@ -98,6 +99,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             bomb = new SoundClip ("/sounds/pokeball.wav");
             app = new SoundClip ("/sounds/Explosion.wav");
             ins = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/PantallaInstruccionesTRY1.png"));
+            creditos = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/PantallaCreditosTRY1.png"));
             base = new Superficie(0, 0);
             base.setPosY(getHeight()-base.getAlto());
             malo = new Malo(0, 0);
@@ -378,6 +380,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                     }
             } else {
                 //imprime creditos
+                g.drawImage(creditos, 0, 0, this);
             }
 	}
 
