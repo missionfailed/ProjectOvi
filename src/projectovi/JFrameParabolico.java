@@ -43,6 +43,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private boolean colisiono;  // Checa si colisiono el bueno con algun malo
         private boolean clickPelota;    // Checa si se le dio click a la pelota
         private boolean llegaMaxAltura; // Checa si llego a la altura maxima de la parabola
+        private boolean instrucciones;  // Checa si se oprimio el boton para ver las instrucciones
         private int colContador; // Tiempo de despliego de colision
         private int direccion;  // Direccion del Bueno
         private int velocidad;  // Velocidad del Bueno
@@ -175,7 +176,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             //Guarda el tiempo actual
             tiempoActual += tiempoTranscurrido;
             
-            if (!pausa) {
+            if (!pausa && !instrucciones) {
                 //dependiendo de la tecla que se este oprimiendo es hacia donde se mueve el personaje Bueno
                 switch (direccion) {
                     case 1:
@@ -205,7 +206,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                         malo.setPosY(malo.getPosY()-(int)velocidadY);
                     } else {
                         llegaMaxAltura = true;
-                        malo.setPosY(malo.getPosY()+(int)velocidadY);
+                        malo.setPosY(malo.getPosY()+(int)velocidadY+(5-vidas));
                     }
                     
                     malo.actualiza(tiempoActual);
@@ -288,10 +289,12 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             }
             //Presiono la letra G
             if (e.getKeyCode() == KeyEvent.VK_G) {
-                try {
-                    grabaArchivo();
-                } catch (IOException ex) {
-                    System.out.println("Error en " + ex.toString());
+                if (!pausa && !instrucciones) {
+                    try {
+                        grabaArchivo();
+                    } catch (IOException ex) {
+                        System.out.println("Error en " + ex.toString());
+                    }
                 }
             }
             //Presiono la letra C
@@ -301,6 +304,10 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                 } catch (IOException ex) {
                     System.out.println("Error en " + ex.toString());
                 }
+            }
+            //Presiono la letra I
+            if (e.getKeyCode() == KeyEvent.VK_I) {
+                instrucciones = !instrucciones;
             }
         }
         
@@ -342,6 +349,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         
         public void paint1 (Graphics g){
             //Se pinta siempre y cuando tengas vidas
+            if (vidas > 0) {
                     if(bueno!=null && malo!=null && base!=null){
                         g.drawImage(bueno.getImagenI(), bueno.getPosX(), bueno.getPosY(), this);
                         g.drawImage(malo.getImagenI(), malo.getPosX(), malo.getPosY(), this);
@@ -349,20 +357,16 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                         //Si el juego esta en pausa se despliega que esta pauso
                         if (pausa)
                             g.drawString(bueno.getPausado(), bueno.getPosX(), bueno.getPosY()+bueno.getAlto()/2);
-                        //Despliega si colisiono con alguno de los malos
-                        if (colisiono && colContador < 8) {
-                            g.drawString(bueno.getDesaparece(), bueno.getPosX(), bueno.getPosY()+bueno.getAlto()/2);
-                            colContador++;
-                        } else {
-                            colisiono = false;
-                            colContador = 0;
-                        }
                         //Pinta el Score y las vidas en la parte superior izquierda
-                        g.drawString("Score:" + Integer.toString(score), 10, 50);
+                        g.drawString("Score:" + Integer.toString(score), 10, 70);
+                        g.drawString("Vidas:" + Integer.toString(vidas), 10, 50);
                     }else{
                             //Da un mensaje mientras se carga el dibujo	
                             g.drawString("No se cargo la imagen..",20,20);
                     }
+            } else {
+                //imprime creditos
+            }
 	}
 
     
@@ -382,7 +386,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                     alcanceMax = getWidth();
                     
                     while (alturaMax <= 0 || alcanceMax >= getWidth()) {
-                        velocidadInicial = Math.random()*99.0+1;
+                        velocidadInicial = Math.random()*70.0+1;
                         angulo = Math.random()+0.01;
                         alturaMax = baseY*1.0 - (pow(velocidadInicial, 2.0)*pow(sin(angulo), 2.0))/(2.0*GRAVEDAD);
                         alcanceMax = (pow(velocidadInicial, 2.0)*sin(2.0*angulo))/(GRAVEDAD);
