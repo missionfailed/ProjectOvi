@@ -33,8 +33,8 @@ public class Bueno extends Base {
     public Bueno(int posX,int posY){
         super(posX,posY);
        
-        Image pirana1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/enemy1.png"));
-        Image pirana2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/enemy2.png"));
+        Image pirana1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/Pirana12.png"));
+        Image pirana2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/Pirana21.png"));
         anim = new Animacion();
         anim.sumaCuadro(pirana1, 100);
         anim.sumaCuadro(pirana2, 100);
