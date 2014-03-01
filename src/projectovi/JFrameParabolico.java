@@ -44,6 +44,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private boolean clickPelota;    // Checa si se le dio click a la pelota
         private boolean llegaMaxAltura; // Checa si llego a la altura maxima de la parabola
         private boolean instrucciones;  // Checa si se oprimio el boton para ver las instrucciones
+        private boolean off; // Checa si se quiere sonido o no
         private int colContador; // Tiempo de despliego de colision
         private int direccion;  // Direccion del Bueno
         private int velocidad;  // Velocidad del Bueno
@@ -76,11 +77,12 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         }
         
         public void init() {
-            setSize(800, 600);
+            setSize(800, 500);
             pausa = false;
             colisiono = false;
             clickPelota = false;
             llegaMaxAltura = false;
+            off = false;
             score = 0;
             direccion = 0;
             velocidad = 15;
@@ -237,7 +239,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             
             //checa colision del malo con la parte de abajo del applet
             if (malo.getPosY() + malo.getAlto() > getHeight()) {
-                app.play();
+                if (!off)
+                    app.play();
                 clickPelota = false;
                 llegaMaxAltura = false;
                 perdida++;
@@ -250,7 +253,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             
             //colision entre objetos
             if (bueno.intersecta(malo)) {
-                bomb.play();
+                if (!off)
+                    bomb.play();
                 clickPelota = false;
                 llegaMaxAltura = false;
                 colisiono = true;
@@ -308,6 +312,10 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             //Presiono la letra I
             if (e.getKeyCode() == KeyEvent.VK_I) {
                 instrucciones = !instrucciones;
+            }
+            //Presiono la letra S
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                off = !off;
             }
         }
         
@@ -386,7 +394,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                     alcanceMax = getWidth();
                     
                     while (alturaMax <= 0 || alcanceMax >= getWidth()) {
-                        velocidadInicial = Math.random()*64.0+1;
+                        velocidadInicial = Math.random()*74.0+1;
                         angulo = Math.random()+0.01;
                         alturaMax = baseY*1.0 - (pow(velocidadInicial, 2.0)*pow(sin(angulo), 2.0))/(2.0*GRAVEDAD);
                         alcanceMax = (pow(velocidadInicial, 2.0)*sin(2.0*angulo))/(GRAVEDAD);
@@ -438,7 +446,11 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         public void mouseExited(MouseEvent e) {
 
         }
-        
+        /**
+        * Metodo que lee a informacion de un archivo y lo agrega a un vector.
+        *
+        * @throws IOException
+        */
         public void leeArchivo() throws IOException {
                                                           
                 BufferedReader fileIn;
@@ -447,7 +459,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                 } catch (FileNotFoundException e){
                         File data = new File("/savedata/datos.txt");
                         PrintWriter fileOut = new PrintWriter(data);
-                        fileOut.println(""+bueno.getPosX()+";"+""+bueno.getPosY()+";"+""+malo.getPosX()+";"+""+malo.getPosY()+";"+""+velocidadX+";"+""+velocidadY+";"+""+clickPelota+";"+""+llegaMaxAltura+";"+""+vidas+";"+""+perdida+";"+""+alturaMax);
+                        fileOut.println(""+bueno.getPosX()+";"+""+bueno.getPosY()+";"+""+malo.getPosX()+";"+""+malo.getPosY()+";"+""+velocidadX+";"+""+velocidadY+";"+""+clickPelota+";"+""+llegaMaxAltura+";"+""+vidas+";"+""+perdida+";"+""+alturaMax+";"+""+off);
                         fileOut.close();
                         fileIn = new BufferedReader(new FileReader("gamedata.txt"));
                 }
@@ -466,15 +478,20 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                       vidas = Integer.parseInt(arr[8]);
                       perdida = Integer.parseInt(arr[9]);
                       alturaMax = Double.parseDouble(arr[10]);
+                      off = Boolean.parseBoolean(arr[11]);
                       dato = fileIn.readLine();
                 }
                 fileIn.close();
         }
-        
+        /**
+        * Metodo que agrega la informacion del vector al archivo.
+        *
+        * @throws IOException
+        */
         public void grabaArchivo() throws IOException {
                                                           
                 PrintWriter fileOut = new PrintWriter(new FileWriter("gamedata.txt"));
-                fileOut.println(""+bueno.getPosX()+";"+""+bueno.getPosY()+";"+""+malo.getPosX()+";"+""+malo.getPosY()+";"+""+velocidadX+";"+""+velocidadY+";"+""+clickPelota+";"+""+llegaMaxAltura+";"+""+vidas+";"+""+perdida+";"+""+alturaMax);
+                fileOut.println(""+bueno.getPosX()+";"+""+bueno.getPosY()+";"+""+malo.getPosX()+";"+""+malo.getPosY()+";"+""+velocidadX+";"+""+velocidadY+";"+""+clickPelota+";"+""+llegaMaxAltura+";"+""+vidas+";"+""+perdida+";"+""+alturaMax+";"+""+off);
                 fileOut.close();
         }
 }
