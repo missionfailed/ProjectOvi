@@ -186,19 +186,19 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                 //dependiendo de la tecla que se este oprimiendo es hacia donde se mueve el personaje Bueno
                 switch (direccion) {
                     case 1:
-                        bueno.setPosX(bueno.getPosX() + velocidad + 2*vidas);
+                        bueno.setPosX(bueno.getPosX() + velocidad + 2*(vidas+10));
                         bueno.actualiza(tiempoActual);
                         break; 
                     case 2:
-                        bueno.setPosX(bueno.getPosX() - velocidad - 2*vidas);
+                        bueno.setPosX(bueno.getPosX() - velocidad - 2*(vidas+10));
                         bueno.actualiza(tiempoActual);
                         break;
                     case 3:
-                        bueno.setPosY(bueno.getPosY() - velocidad - 2*vidas);
+                        bueno.setPosY(bueno.getPosY() - velocidad - 2*(vidas+10));
                         bueno.actualiza(tiempoActual);
                         break;
                     case 4:
-                        bueno.setPosY(bueno.getPosY() + velocidad + 2*vidas);
+                        bueno.setPosY(bueno.getPosY() + velocidad + 2*(vidas+10));
                         bueno.actualiza(tiempoActual);
                     case 0:
                         bueno.setPosX(bueno.getPosX());
