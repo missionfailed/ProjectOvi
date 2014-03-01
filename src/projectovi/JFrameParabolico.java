@@ -180,19 +180,19 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                 //dependiendo de la tecla que se este oprimiendo es hacia donde se mueve el personaje Bueno
                 switch (direccion) {
                     case 1:
-                        bueno.setPosX(bueno.getPosX() + velocidad);
+                        bueno.setPosX(bueno.getPosX() + velocidad + 2*vidas);
                         bueno.actualiza(tiempoActual);
                         break; 
                     case 2:
-                        bueno.setPosX(bueno.getPosX() - velocidad);
+                        bueno.setPosX(bueno.getPosX() - velocidad - 2*vidas);
                         bueno.actualiza(tiempoActual);
                         break;
                     case 3:
-                        bueno.setPosY(bueno.getPosY() - velocidad);
+                        bueno.setPosY(bueno.getPosY() - velocidad - 2*vidas);
                         bueno.actualiza(tiempoActual);
                         break;
                     case 4:
-                        bueno.setPosY(bueno.getPosY() + velocidad);
+                        bueno.setPosY(bueno.getPosY() + velocidad + 2*vidas);
                         bueno.actualiza(tiempoActual);
                     case 0:
                         bueno.setPosX(bueno.getPosX());
@@ -206,7 +206,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                         malo.setPosY(malo.getPosY()-(int)velocidadY);
                     } else {
                         llegaMaxAltura = true;
-                        malo.setPosY(malo.getPosY()+(int)velocidadY+(5-vidas));
+                        malo.setPosY(malo.getPosY()+(int)velocidadY);
                     }
                     
                     malo.actualiza(tiempoActual);
@@ -386,7 +386,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                     alcanceMax = getWidth();
                     
                     while (alturaMax <= 0 || alcanceMax >= getWidth()) {
-                        velocidadInicial = Math.random()*70.0+1;
+                        velocidadInicial = Math.random()*64.0+1;
                         angulo = Math.random()+0.01;
                         alturaMax = baseY*1.0 - (pow(velocidadInicial, 2.0)*pow(sin(angulo), 2.0))/(2.0*GRAVEDAD);
                         alcanceMax = (pow(velocidadInicial, 2.0)*sin(2.0*angulo))/(GRAVEDAD);
