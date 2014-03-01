@@ -55,10 +55,11 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
         private double velocidadX;  // velocidad en X de la nube
         private double velocidadY;  // velocidad en Y de la nube
         private double angulo;      // angulo inicial de lanzamiento de la nube
-        private double alturaMax;
-        private double alcanceMax;
-        private int baseY;
+        private double alturaMax;   // altura maxima del tiro parabolico
+        private double alcanceMax;  // alcance maximo del tiro parabolico
+        private int baseY;          // posicion inicial y
         private Image dbImage;	// Imagen a proyectar
+        private Image ins;
         private Graphics dbg;	// Objeto grafico
         private SoundClip bomb;    //Objeto AudioClip 
         private SoundClip app;     //Objeto AudioClip
@@ -96,6 +97,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
             //Se cargan los sonidos.
             bomb = new SoundClip ("/sounds/pokeball.wav");
             app = new SoundClip ("/sounds/Explosion.wav");
+            ins = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/PantallaInicioTRY1.png"));
             base = new Superficie(0, 0);
             base.setPosY(getHeight()-base.getAlto());
             malo = new Malo(0, 0);
@@ -365,6 +367,8 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                         //Si el juego esta en pausa se despliega que esta pauso
                         if (pausa)
                             g.drawString(bueno.getPausado(), bueno.getPosX(), bueno.getPosY()+bueno.getAlto()/2);
+                        if (instrucciones)
+                            g.drawImage(ins, 0, 0, this);
                         //Pinta el Score y las vidas en la parte superior izquierda
                         g.drawString("Score:" + Integer.toString(score), 10, 70);
                         g.drawString("Vidas:" + Integer.toString(vidas), 10, 50);
