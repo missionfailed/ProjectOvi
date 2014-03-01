@@ -374,6 +374,7 @@ public class JFrameParabolico extends JFrame implements Runnable, KeyListener, M
                         //Pinta el Score y las vidas en la parte superior izquierda
                         g.drawString("Score:" + Integer.toString(score), 10, 70);
                         g.drawString("Vidas:" + Integer.toString(vidas), 10, 50);
+                        g.drawString("Instrucciones 'I'",10,90);
                     }else{
                             //Da un mensaje mientras se carga el dibujo	
                             g.drawString("No se cargo la imagen..",20,20);
