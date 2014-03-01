@@ -36,8 +36,8 @@ public class Bueno extends Base {
         Image pirana1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/Pirana12.png"));
         Image pirana2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/images/Pirana21.png"));
         anim = new Animacion();
-        anim.sumaCuadro(pirana1, 100);
-        anim.sumaCuadro(pirana2, 100);
+        anim.sumaCuadro(pirana1, 80);
+        anim.sumaCuadro(pirana2, 80);
     }
     
     public String getPausado() {
